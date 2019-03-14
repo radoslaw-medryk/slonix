@@ -1,5 +1,7 @@
 node_modules/
 src/
+.vscode/
 tsconfig.json
 tslint.json
 .gitignore
+.prettierrc

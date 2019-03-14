@@ -1,0 +1,21 @@
+{
+    "name": "slonix",
+    "version": "0.1.0",
+    "main": "dist/index.js",
+    "typings": "dist/index.d.ts",
+    "scripts": {
+        "build": "mkdir -p dist && rm -r dist && tsc",
+        "prettier": "prettier ./src/**/*.{js,ts,tsx,json} --write"
+    },
+    "devDependencies": {
+        "@radoslaw-medryk/tslint": "^0.1.7",
+        "@types/slonik": "^15.4.0",
+        "prettier": "^1.16.4",
+        "tslint": "^5.13.0",
+        "tslint-config-prettier": "^1.18.0",
+        "typescript": "^3.3.3333"
+    },
+    "peerDependencies": {
+        "slonik": "^16.9.0"
+    }
+}

@@ -1,6 +1,6 @@
 {
     "name": "slonix",
-    "version": "0.1.2",
+    "version": "0.1.6",
     "main": "dist/index.js",
     "typings": "dist/index.d.ts",
     "scripts": {
@@ -17,5 +17,6 @@
     },
     "peerDependencies": {
         "slonik": "^16.9.0"
-    }
+    },
+    "dependencies": {}
 }

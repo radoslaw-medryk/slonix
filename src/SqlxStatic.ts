@@ -1,6 +1,6 @@
-import { ValueProcessor } from "./ValueProcessor";
+import { ValueProcessor } from "./types/ValueProcessor";
 
-export class Sqlx {
+export class SqlxStatic {
     public static _processors: ValueProcessor[] = [];
 
     public static registerProcessor = (processor: ValueProcessor) => {
@@ -8,6 +8,6 @@ export class Sqlx {
             throw new Error("!processor");
         }
 
-        Sqlx._processors = [...Sqlx._processors, processor];
+        SqlxStatic._processors = [...SqlxStatic._processors, processor];
     };
 }

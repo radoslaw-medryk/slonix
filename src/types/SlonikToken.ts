@@ -18,5 +18,6 @@ export type SlonikToken =
     | ValueListSqlTokenType;
 
 export const isSlonikToken = (value: any): value is SlonikToken => {
-    return value && value.type;
+    // TODO [RM]: hacky
+    return value && typeof value.type === "symbol" && value.type.toString().startsWith("Symbol(SLONIK");
 };

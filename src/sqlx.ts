@@ -16,26 +16,27 @@ type SqlxOptions = {
     prepared: boolean;
 };
 
-const intoRaw = (processedValue: ProcessedValue) => {
+const intoRaw = (options: SqlxOptions, processedValue: ProcessedValue) => {
+    if (options.prepared) {
+        return sql.raw(processedValue.value);
+    }
+
     const value = processedValue.wrapString ? wrapString(escapeString(processedValue.value)) : processedValue.value;
 
     return sql.raw(value);
 };
 
-const handleValue = (value: any): ValueExpressionType => {
+const handleValue = (options: SqlxOptions, value: any): ValueExpressionType => {
     if (isSlonikToken(value)) {
         return value;
     }
 
-    return intoRaw(processValue(value, Sqlx._processors));
+    const processedValue = processValue(value, Sqlx._processors);
+    return intoRaw(options, processedValue);
 };
 
 const internalSqlx = (options: SqlxOptions, template: TemplateStringsArray, ...values: any[]): SqlSqlTokenType => {
-    if (options.prepared !== false) {
-        return sql(template, ...values);
-    }
-
-    const handledValues = values.map(value => handleValue(value));
+    const handledValues = values.map(q => handleValue(options, q));
     return sql(template, ...handledValues);
 };
 

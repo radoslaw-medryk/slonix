@@ -1,5 +1,5 @@
-import { ValueProcessor } from "./ValueProcessor";
-import { ProcessedValue } from "./ProcessedValue";
+import { ValueProcessor } from "../types/ValueProcessor";
+import { ProcessedValue } from "../types/ProcessedValue";
 
 // TODO [RM]: process value also for `normal` sql mode without noPrepared (no wrapping/escaping needed)
 

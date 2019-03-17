@@ -7,6 +7,25 @@ import {
     UnnestSqlTokenType,
     ValueListSqlTokenType,
 } from "slonik";
+import {
+    SqlTokenSymbol,
+    RawSqlTokenSymbol,
+    IdentifierTokenSymbol,
+    ValueListTokenSymbol,
+    TupleTokenSymbol,
+    TupleListTokenSymbol,
+    UnnestTokenSymbol,
+} from "slonik/symbols";
+
+const slonikSymbols = [
+    SqlTokenSymbol,
+    RawSqlTokenSymbol,
+    IdentifierTokenSymbol,
+    ValueListTokenSymbol,
+    TupleTokenSymbol,
+    TupleListTokenSymbol,
+    UnnestTokenSymbol,
+];
 
 export type SlonikToken =
     | IdentifierTokenType
@@ -18,5 +37,5 @@ export type SlonikToken =
     | ValueListSqlTokenType;
 
 export const isSlonikToken = (value: any): value is SlonikToken => {
-    return value && value.type instanceof Symbol;
+    return slonikSymbols.some(q => q === value);
 };

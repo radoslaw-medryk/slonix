@@ -1,54 +1,40 @@
-import { SqlSqlTokenType, ValueExpressionType, sql } from "slonik";
-import { processValue } from "./processValue";
-import { Sqlx } from "./SqlxClass";
-import { escapeString } from "./escapeString";
-import { wrapString } from "./wrapString";
-import { ProcessedValue } from "./ProcessedValue";
-import { isSlonikToken } from "./SlonikToken";
+import { SqlxQuery, sqlxQuerySymbol } from "./types/SqlxQuery";
+import { CommonQueryMethodsType, TaggedTemplateLiteralInvocationType } from "slonik";
+import { translateQuery } from "./processing/translateQuery";
+import { SqlxStatic } from "./SqlxStatic";
+import { SqlxQueryMethod, Sqlx } from "./types/Sqlx";
 
-export type SqlxTemplateFunc = (template: TemplateStringsArray, ...values: any[]) => SqlSqlTokenType;
+type TargetFunc<T> = (sql: TaggedTemplateLiteralInvocationType) => Promise<T>;
+type TargetSelectFunc<T> = (target: CommonQueryMethodsType) => TargetFunc<T>;
 
-export type SqlxFunc = SqlxTemplateFunc & {
-    noPrepared: SqlxTemplateFunc;
+const wrapper = <T>(targetSelectFunc: TargetSelectFunc<T>): SqlxQueryMethod<T> => {
+    return (target, query, options) => {
+        options = options || {
+            usePreparedStatement: true,
+        };
+
+        const translatedQuery = translateQuery(query, options);
+        const targetFunc = targetSelectFunc(target);
+        return targetFunc(translatedQuery);
+    };
 };
 
-type SqlxOptions = {
-    prepared: boolean;
+const _sqlx: Partial<Sqlx> = (template: TemplateStringsArray, ...values: any[]): SqlxQuery => {
+    return {
+        type: sqlxQuerySymbol,
+        template: template,
+        values: values,
+    };
 };
 
-const intoRaw = (options: SqlxOptions, processedValue: ProcessedValue) => {
-    if (options.prepared) {
-        return sql.raw(processedValue.value);
-    }
+_sqlx.registerProcessor = SqlxStatic.registerProcessor;
+_sqlx.any = wrapper(target => target.any);
+_sqlx.anyFirst = wrapper(target => target.anyFirst);
+_sqlx.many = wrapper(target => target.many);
+_sqlx.manyFirst = wrapper(target => target.manyFirst);
+_sqlx.maybeOne = wrapper(target => target.maybeOne);
+_sqlx.maybeOneFirst = wrapper(target => target.maybeOneFirst);
+_sqlx.oneFirst = wrapper(target => target.oneFirst);
+_sqlx.query = wrapper(target => target.query);
 
-    const value = processedValue.wrapString ? wrapString(escapeString(processedValue.value)) : processedValue.value;
-
-    return sql.raw(value);
-};
-
-const handleValue = (options: SqlxOptions, value: any): ValueExpressionType => {
-    if (isSlonikToken(value)) {
-        return value;
-    }
-
-    const processedValue = processValue(value, Sqlx._processors);
-    return intoRaw(options, processedValue);
-};
-
-const internalSqlx = (options: SqlxOptions, template: TemplateStringsArray, ...values: any[]): SqlSqlTokenType => {
-    const handledValues = values.map(q => handleValue(options, q));
-    return sql(template, ...handledValues);
-};
-
-const _sqlx: SqlxFunc = (template: TemplateStringsArray, ...values: any[]) => {
-    const options: SqlxOptions = { prepared: true };
-    return internalSqlx(options, template, ...values);
-};
-
-const noPrepared: SqlxTemplateFunc = (template: TemplateStringsArray, ...values: any[]) => {
-    const options: SqlxOptions = { prepared: false };
-    return internalSqlx(options, template, ...values);
-};
-
-_sqlx.noPrepared = noPrepared;
-export const sqlx = _sqlx;
+export const sqlx = _sqlx as Sqlx;

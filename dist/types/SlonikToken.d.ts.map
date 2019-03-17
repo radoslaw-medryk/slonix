@@ -1,0 +1,1 @@
+{"version":3,"file":"SlonikToken.d.ts","sourceRoot":"","sources":["../../src/types/SlonikToken.ts"],"names":[],"mappings":"AAAA,OAAO,EACH,mBAAmB,EACnB,eAAe,EACf,eAAe,EACf,qBAAqB,EACrB,iBAAiB,EACjB,kBAAkB,EAClB,qBAAqB,EACxB,MAAM,QAAQ,CAAC;AAqBhB,oBAAY,WAAW,GACjB,mBAAmB,GACnB,eAAe,GACf,eAAe,GACf,qBAAqB,GACrB,iBAAiB,GACjB,kBAAkB,GAClB,qBAAqB,CAAC;AAE5B,eAAO,MAAM,aAAa,sCAEzB,CAAC"}

@@ -1,0 +1,1 @@
+{"version":3,"file":"propsDefinition.d.ts","sourceRoot":"","sources":["../../src/definitionHelpers/propsDefinition.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,mBAAmB,EAAO,MAAM,QAAQ,CAAC;AAElD,aAAK,iBAAiB,CAAC,CAAC,IAAI,UAAU,CAAC,CAAC;AAExC,oBAAY,eAAe,CAAC,CAAC,IAAI;KAAG,GAAG,IAAI,MAAM,CAAC,GAAG,mBAAmB;CAAE,CAAC;AAE3E,eAAO,MAAM,eAAe,iFAa3B,CAAC"}

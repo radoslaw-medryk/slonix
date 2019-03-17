@@ -19,5 +19,5 @@ export type SlonikToken =
 
 export const isSlonikToken = (value: any): value is SlonikToken => {
     // TODO [RM]: hacky
-    return value && value instanceof Symbol && value.toString().startsWith("Symbol(SLONIK");
+    return value && value.type instanceof Symbol && value.type.toString().startsWith("Symbol(SLONIK");
 };
